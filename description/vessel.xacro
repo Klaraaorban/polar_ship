@@ -49,22 +49,22 @@
         </visual>
         <collision name="vessel_core_collision">
             <geometry>
-                <box size="0.5 0.5 0.5"/>
+                <box size="1.2 0.8 0.4"/>
             </geometry>
         </collision>
 
         <visual>
             <geometry>
-                <cylinder radius="0.4" length="0.4"/>
+                <box size="0.562 0.562 0.4"/>
             </geometry>
-            <origin xyz="0.6 0 0.2" rpy="0 0 0"/>
+            <origin xyz="0.6 0 0.2" rpy="0 0 0.785398"/> <!-- rotated 45° around Y-axis -->
             <material name="blue"/>
         </visual>
-        <collision name="vessel_core_collision">
+        <collision>
             <geometry>
-                <cylinder radius="0.4" length="0.4"/>
+                <box size="0.562 0.562 0.4"/>
             </geometry>
-            <origin xyz="0.6 0 0.2" rpy="0 0 0"/>
+            <origin xyz="0.6 0 0.2" rpy="0 0 0.785398"/>
         </collision>
 
     </link>
