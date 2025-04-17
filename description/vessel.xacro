@@ -4,34 +4,26 @@
     <material name="white">
         <color rgba="1 1 1 1" />
     </material>
-
     <material name="orange">
         <color rgba="1 0.3 0.1 1"/>
     </material>
-
     <material name="blue">
         <color rgba="0.2 0.2 1 1"/>
     </material>
-
     <material name="black">
         <color rgba="0 0 0 1"/>
     </material>
-
     <material name="green">
         <color rgba="0 1 0 1"/>
     </material>
-
     <material name="red">
         <color rgba="1 0 0 1"/>
     </material>
-
     <material name="grey">
         <color rgba="0.5 0.5 0.5 1"/>
     </material>
 
-    <link name="base_link">
-
-    </link>
+    <link name="base_link" />
 
     <joint name="vessel_joint" type="fixed">
         <parent link="base_link"/>
@@ -43,36 +35,86 @@
         <visual name="vessel_core_visual">
             <origin xyz="0 0 0.2" rpy="0 0 0"/>
             <geometry>
-                <box size="1.2 0.8 0.4"/>
+                <box size="1.2 0.8 0.3"/>
             </geometry>
-            <material name="blue"/>
+            <material name="white"/>
         </visual>
         <collision name="vessel_core_collision">
             <geometry>
-                <box size="1.2 0.8 0.4"/>
+                <box size="1.2 0.8 0.3"/>
             </geometry>
+            <origin xyz="0 0 0.2"/>
         </collision>
+    </link>
 
+    <link name="captain_room">
         <visual>
             <geometry>
-                <box size="0.562 0.562 0.4"/>
+                <box size="0.7 0.5 0.25"/>
             </geometry>
-            <origin xyz="0.6 0 0.2" rpy="0 0 0.785398"/> <!-- rotated 45° around Y-axis -->
-            <material name="blue"/>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <material name="orange"/>
         </visual>
         <collision>
             <geometry>
-                <box size="0.562 0.562 0.4"/>
+                <box size="0.7 0.5 0.25"/>
             </geometry>
-            <origin xyz="0.6 0 0.2" rpy="0 0 0.785398"/>
+            <origin xyz="0 0 0"/>
         </collision>
-
     </link>
 
+    <joint name="captain_room_joint" type="fixed">
+        <parent link="vessel_core"/>
+        <child link="captain_room"/>
+        <origin xyz="-0.2 0 0.3" rpy="0 0 0"/>
+    </joint>
+
+    <link name="vessel_nose">
+        <visual>
+            <geometry>
+                <box size="0.562 0.562 0.3"/>
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 0 0.785398"/>
+            <material name="white"/>
+        </visual>
+        <collision>
+            <geometry>
+                <box size="0.562 0.562 0.3"/>
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 0 0.785398"/>
+        </collision>
+    </link>
+
+    <joint name="vessel_nose_joint" type="fixed">
+        <parent link="vessel_core"/>
+        <child link="vessel_nose"/>
+        <origin xyz="0.6 0 0.2" rpy="0 0 0"/>
+    </joint>
+
+    <link name="chimney">
+        <visual>
+            <geometry>
+                <cylinder radius="0.1" length="0.3"/>
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <material name="grey"/>
+        </visual>
+        <collision>
+            <geometry>
+                <cylinder radius="0.1" length="0.3"/>
+            </geometry>
+            <origin xyz="0 0 0"/>
+        </collision>
+    </link>
+
+    <joint name="chimney_joint" type="fixed">
+        <parent link="vessel_core"/>
+        <child link="chimney"/>
+        <origin xyz="0.6 0 0.3" rpy="0 0 0"/>
+    </joint>
+
     <gazebo reference="vessel_core">
-        <material>gazebo/blue</material>
+        <material>gazebo/white</material>
     </gazebo>
-
-
 
 </robot>
