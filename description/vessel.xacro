@@ -1,6 +1,17 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
+    <xacro:macro name="inertial_cylinder" params="mass length radius *origin">
+        <inertial>
+            <xacro:insert_block name="origin"/>
+            <mass value="${mass}" />
+            <inertia ixx="${(1/12) * mass * (3*radius*radius + length*length)}" ixy="0.0" ixz="0.0"
+                    iyy="${(1/12) * mass * (3*radius*radius + length*length)}" iyz="0.0"
+                    izz="${(1/2) * mass * (radius*radius)}" />
+        </inertial>
+    </xacro:macro>
+
+
     <material name="white">
         <color rgba="1 1 1 1" />
     </material>
@@ -28,10 +39,19 @@
     <joint name="vessel_joint" type="fixed">
         <parent link="base_link"/>
         <child link="vessel_core"/>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <origin xyz="0 0 1.3" rpy="0 0 0"/>
     </joint>
 
     <link name="vessel_core">
+
+        <inertial>
+            <origin xyz="0 0 0.2" rpy="0 0 0"/>
+            <mass value="10.0"/>
+            <inertia ixx="1.0" ixy="0.0" ixz="0.0"
+                    iyy="1.0" iyz="0.0"
+                    izz="1.0"/>
+        </inertial>
+
         <visual name="vessel_core_visual">
             <origin xyz="0 0 0.2" rpy="0 0 0"/>
             <geometry>
@@ -113,8 +133,113 @@
         <origin xyz="0.6 0 0.3" rpy="0 0 0"/>
     </joint>
 
+
+<!-- FRONT PROPELLER 1 -->
+<link name="front_propeller_1">
+    <visual>
+        <geometry>
+            <cylinder radius="0.1" length="0.1"/>
+        </geometry>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <material name="blue"/>
+    </visual>
+    <collision>
+        <geometry>
+            <cylinder radius="0.1" length="0.1"/>
+        </geometry>
+        <origin xyz="0 0 0"/>
+    </collision>
+    <xacro:inertial_cylinder mass="0.2" length="0.1" radius="0.1">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+    </xacro:inertial_cylinder>
+</link>
+
+<joint name="front_propeller_1_joint" type="continuous">
+    <parent link="vessel_core"/>  <!-- match the 'vessel_core' style you had -->
+    <child link="front_propeller_1"/>
+    <origin xyz="-0.6 -0.2 0.12" rpy="1.5708 0 1.5708"/>  <!-- from your working propeller1 -->
+    <axis xyz="0 0 1"/>
+</joint>
+
+<gazebo reference="front_propeller_1">
+    <material>Gazebo/Blue</material>
+</gazebo>
+
+<!-- FRONT PROPELLER 2 -->
+<link name="front_propeller_2">
+    <visual>
+        <geometry>
+            <cylinder radius="0.1" length="0.1"/>
+        </geometry>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <material name="blue"/>
+    </visual>
+    <collision>
+        <geometry>
+            <cylinder radius="0.1" length="0.1"/>
+        </geometry>
+        <origin xyz="0 0 0"/>
+    </collision>
+    <xacro:inertial_cylinder mass="0.2" length="0.1" radius="0.1">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+    </xacro:inertial_cylinder>
+</link>
+
+<joint name="front_propeller_2_joint" type="continuous">
+    <parent link="vessel_core"/>
+    <child link="front_propeller_2"/>
+    <origin xyz="-0.6 0.2 0.12" rpy="1.5708 0 1.5708"/>  <!-- from your working propeller2 -->
+    <axis xyz="0 0 1"/>
+</joint>
+
+<gazebo reference="front_propeller_2">
+    <material>Gazebo/Blue</material>
+</gazebo>
+
+
     <gazebo reference="vessel_core">
-        <material>gazebo/white</material>
+        <material>Gazebo/White</material>
+        <mu1>0.0001</mu1>
+        <mu2>0.0001</mu2>
     </gazebo>
 
+    <gazebo reference="captain_room">
+        <material>Gazebo/Orange</material>
+    </gazebo>
+    <gazebo reference="vessel_nose">
+        <material>Gazebo/White</material>
+        <mu1>0.0001</mu1>
+        <mu2>0.0001</mu2>
+    </gazebo>
+    <gazebo reference="chimney">    
+        <material>Gazebo/Grey</material>
+    </gazebo>
+
+  <gazebo>
+        <plugin name="diff_drive" filename="libgazebo_ros_diff_drive.so">
+            <!-- WHEEL INFO -->
+
+            <left_joint>front_propeller_1_joint</left_joint>
+            <right_joint>front_propeller_2_joint</right_joint>
+            <wheel_separation>0.4</wheel_separation>
+            <wheel_diameter>0.1</wheel_diameter>
+
+            <!-- LIMITS -->
+            <max_wheel_torque>200</max_wheel_torque>
+            <max_wheel_acceleration>10.0</max_wheel_acceleration>
+
+            <!-- OUTPUT -->
+            <odometry_frame>odom</odometry_frame>
+            <robot_base_frame>base_link</robot_base_frame>
+
+            <publish_odom>true</publish_odom>
+            <publish_odom_tf>true</publish_odom_tf>
+            <publish_wheel_tf>true</publish_wheel_tf>
+            
+
+        </plugin>
+    </gazebo>
+
+
 </robot>
+
