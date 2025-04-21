@@ -153,7 +153,7 @@ def main():
     spinner = threading.Thread(target=rclpy.spin, args=(node,))
     spinner.start()
 
-    speed = 0.15
+    speed = 0.2
     turn = 0.05
     x = 0.0
     y = 0.0
@@ -189,10 +189,16 @@ def main():
                     print(msg)
                 status = (status + 1) % 15
             else:
-                x = 0.0
-                y = 0.0
-                z = 0.0
-                th = 0.0
+                decay = 0.3
+                x = x * decay
+                y = y * decay
+                z = z * decay
+                th = th * decay
+
+                if abs(x) < 0.01: x = 0.0
+                if abs(y) < 0.01: y = 0.0
+                if abs(z) < 0.01: z = 0.0
+
                 if (key == '\x03'):
                     break
 
@@ -203,7 +209,7 @@ def main():
             if x > 0:
                 twist.linear.x = x * speed
             elif x < 0:
-                twist.linear.x = x *speed*0.5
+                twist.linear.x = x *speed*0.25
             else:
                 twist.linear.x = 0.0
             twist.linear.y = y * speed
