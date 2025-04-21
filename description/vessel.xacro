@@ -34,7 +34,10 @@
         <color rgba="0.5 0.5 0.5 1"/>
     </material>
 
-    <link name="base_link" />
+    <link name="base_link">
+        <linear_damping>5.0</linear_damping>
+        <angular_damping>10.0</angular_damping>
+    </link>
 
     <joint name="vessel_joint" type="fixed">
         <parent link="base_link"/>
@@ -134,67 +137,129 @@
     </joint>
 
 
-<!-- FRONT PROPELLER 1 -->
-<link name="front_propeller_1">
-    <visual>
-        <geometry>
-            <cylinder radius="0.1" length="0.1"/>
-        </geometry>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
-        <material name="blue"/>
-    </visual>
-    <collision>
-        <geometry>
-            <cylinder radius="0.1" length="0.1"/>
-        </geometry>
-        <origin xyz="0 0 0"/>
-    </collision>
-    <xacro:inertial_cylinder mass="0.2" length="0.1" radius="0.1">
-        <origin xyz="0 0 0" rpy="0 0 0"/>
-    </xacro:inertial_cylinder>
-</link>
+    <joint name="left_wheel_joint" type="continuous">
+        <parent link="vessel_core"/>
+        <child link="left_wheel"/>
+        <origin xyz="-0.5 0.4 0.12" rpy="-${pi/2} 0 0" />
+        <axis xyz="0 0 1"/>
+        <limit effort="100" velocity="1.0" lower="-0.5" upper="0.5"/>
+    </joint>
 
-<joint name="front_propeller_1_joint" type="continuous">
-    <parent link="vessel_core"/>  <!-- match the 'vessel_core' style you had -->
-    <child link="front_propeller_1"/>
-    <origin xyz="-0.6 -0.2 0.12" rpy="1.5708 0 1.5708"/>  <!-- from your working propeller1 -->
-    <axis xyz="0 0 1"/>
-</joint>
+    <link name="left_wheel">
+        <visual>
+            <geometry>
+                <cylinder radius="0.1" length="0.05"/>
+            </geometry>
+            <material name="red"/>
+        </visual>
+        <collision>
+            <geometry>
+                <cylinder radius="0.1" length="0.05"/>
+            </geometry>
+        </collision>
+        <xacro:inertial_cylinder mass="0.2" length="0.05" radius="0.1">
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+        </xacro:inertial_cylinder>
+    </link>
 
-<gazebo reference="front_propeller_1">
-    <material>Gazebo/Blue</material>
-</gazebo>
+    <gazebo reference="left_wheel">
+        <material>Gazebo/Red</material>
+    </gazebo>
 
-<!-- FRONT PROPELLER 2 -->
-<link name="front_propeller_2">
-    <visual>
-        <geometry>
-            <cylinder radius="0.1" length="0.1"/>
-        </geometry>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
-        <material name="blue"/>
-    </visual>
-    <collision>
-        <geometry>
-            <cylinder radius="0.1" length="0.1"/>
-        </geometry>
-        <origin xyz="0 0 0"/>
-    </collision>
-    <xacro:inertial_cylinder mass="0.2" length="0.1" radius="0.1">
-        <origin xyz="0 0 0" rpy="0 0 0"/>
-    </xacro:inertial_cylinder>
-</link>
+    <joint name="right_wheel_joint" type="continuous">
+        <parent link="vessel_core"/>
+        <child link="right_wheel"/>
+        <origin xyz="-0.5 -0.4 0.12" rpy="${pi/2} 0 0" />
+        <axis xyz="0 0 -1"/>
+        <limit effort="100" velocity="1.0" lower="-0.5" upper="0.5"/>
+    </joint>
 
-<joint name="front_propeller_2_joint" type="continuous">
-    <parent link="vessel_core"/>
-    <child link="front_propeller_2"/>
-    <origin xyz="-0.6 0.2 0.12" rpy="1.5708 0 1.5708"/>  <!-- from your working propeller2 -->
-    <axis xyz="0 0 1"/>
-</joint>
+    <link name="right_wheel">
+        <visual>
+            <geometry>
+                <cylinder radius="0.1" length="0.05"/>
+            </geometry>
+            <material name="red"/>
+        </visual>
+        <collision>
+            <geometry>
+                <cylinder radius="0.1" length="0.05"/>
+            </geometry>
+        </collision>
+        <xacro:inertial_cylinder mass="0.2" length="0.05" radius="0.1">
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+        </xacro:inertial_cylinder>
+    </link>
 
-<gazebo reference="front_propeller_2">
-    <material>Gazebo/Blue</material>
-</gazebo>
+    <gazebo reference="right_wheel">
+        <material>Gazebo/Red</material>
+    </gazebo>
+
+        <!-- RIGHT PROPELLER 1 -->
+    <link name="right_propeller">
+        <visual>
+            <geometry>
+                <cylinder radius="0.1" length="0.1"/>
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <material name="blue"/>
+        </visual>
+        <collision>
+            <geometry>
+                <cylinder radius="0.1" length="0.1"/>
+            </geometry>
+            <origin xyz="0 0 0"/>
+        </collision>
+        <xacro:inertial_cylinder mass="0.2" length="0.1" radius="0.1">
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+        </xacro:inertial_cylinder>
+    </link>
+
+    <joint name="right_propeller_joint" type="continuous">
+        <parent link="vessel_core"/>  <!-- match the 'vessel_core' style you had -->
+        <child link="right_propeller"/>
+        <origin xyz="-0.6 -0.2 0.12" rpy="1.5708 0 1.5708"/>  <!-- from your working propeller1 -->
+        <axis xyz="0 0 1"/>
+    </joint>
+
+    <gazebo reference="right_propeller">
+        <material>Gazebo/Blue</material>
+        <mu1>0.0001</mu1>
+        <mu2>0.0001</mu2>
+    </gazebo>
+
+    <!-- LEFT PROPELLER 2 -->
+    <link name="left_propeller">
+        <visual>
+            <geometry>
+                <cylinder radius="0.1" length="0.1"/>
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <material name="blue"/>
+        </visual>
+        <collision>
+            <geometry>
+                <cylinder radius="0.1" length="0.1"/>
+            </geometry>
+            <origin xyz="0 0 0"/>
+        </collision>
+        <xacro:inertial_cylinder mass="0.2" length="0.1" radius="0.1">
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+        </xacro:inertial_cylinder>
+    </link>
+
+    <joint name="left_propeller_joint" type="continuous">
+        <parent link="vessel_core"/>
+        <child link="left_propeller"/>
+        <origin xyz="-0.6 0.2 0.12" rpy="1.5708 0 1.5708"/>  <!-- from your working propeller2 -->
+        <axis xyz="0 0 1"/>
+    </joint>
+
+    <gazebo reference="left_propeller">
+        <material>Gazebo/Blue</material>
+        <mu1>0.0001</mu1>
+        <mu2>0.0001</mu2>
+    </gazebo>
 
 
     <gazebo reference="vessel_core">
@@ -205,6 +270,8 @@
 
     <gazebo reference="captain_room">
         <material>Gazebo/Orange</material>
+        <mu1>0.0001</mu1>
+        <mu2>0.0001</mu2>
     </gazebo>
     <gazebo reference="vessel_nose">
         <material>Gazebo/White</material>
@@ -213,33 +280,8 @@
     </gazebo>
     <gazebo reference="chimney">    
         <material>Gazebo/Grey</material>
+        <mu1>0.0001</mu1>
+        <mu2>0.0001</mu2>
     </gazebo>
-
-  <gazebo>
-        <plugin name="diff_drive" filename="libgazebo_ros_diff_drive.so">
-            <!-- WHEEL INFO -->
-
-            <left_joint>front_propeller_1_joint</left_joint>
-            <right_joint>front_propeller_2_joint</right_joint>
-            <wheel_separation>0.4</wheel_separation>
-            <wheel_diameter>0.1</wheel_diameter>
-
-            <!-- LIMITS -->
-            <max_wheel_torque>200</max_wheel_torque>
-            <max_wheel_acceleration>10.0</max_wheel_acceleration>
-
-            <!-- OUTPUT -->
-            <odometry_frame>odom</odometry_frame>
-            <robot_base_frame>base_link</robot_base_frame>
-
-            <publish_odom>true</publish_odom>
-            <publish_odom_tf>true</publish_odom_tf>
-            <publish_wheel_tf>true</publish_wheel_tf>
-            
-
-        </plugin>
-    </gazebo>
-
 
 </robot>
-

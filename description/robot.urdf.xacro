@@ -3,6 +3,6 @@
 
     <xacro:include filename="vessel.xacro" />
 
-    <!-- <xacro:include filename="gazebo_control.xacro" /> -->
+    <xacro:include filename="gazebo_control.xacro" />
 
 </robot>
