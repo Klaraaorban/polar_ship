@@ -38,9 +38,12 @@
             <ray>
                 <scan>
                 <horizontal>
-                    <samples>270</samples> <!-- Use 270° like a Hokuyo -->
-                    <min_angle>-2.356</min_angle> <!-- -135° -->
-                    <max_angle>2.356</max_angle>  <!-- +135° -->
+                    <!-- <samples>270</samples> 
+                    <min_angle>-2.356</min_angle> 
+                    <max_angle>2.356</max_angle>  +135° -->
+                    <samples>268</samples>
+                    <min_angle>-2.350</min_angle>
+                    <max_angle>2.350</max_angle>
                 </horizontal>
                 </scan>
                 <range>
