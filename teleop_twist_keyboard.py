@@ -154,6 +154,7 @@ def main():
     spinner.start()
 
     speed = 0.2
+    # turn = 0.05
     turn = 0.05
     x = 0.0
     y = 0.0

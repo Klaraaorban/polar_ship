@@ -426,7 +426,7 @@ def generate_launch_description():
         DeclareLaunchArgument('gui_cfg',  default_value='~/.ros/rtabmap_gui.ini',  description='Configuration path of rtabmap_viz.'),
         DeclareLaunchArgument('rviz_cfg', default_value=config_rviz,               description='Configuration path of rviz2.'),
 
-        DeclareLaunchArgument('frame_id',       default_value='base_link',          description='Fixed frame id of the robot (base frame), you may set "base_link" or "base_footprint" if they are published. For camera-only config, this could be "camera_link".'),
+        DeclareLaunchArgument('frame_id',       default_value='base_footprint',          description='Fixed frame id of the robot (base frame), you may set "base_link" or "base_footprint" if they are published. For camera-only config, this could be "camera_link".'),  #base_link changed to base_footprint for stability testing
         DeclareLaunchArgument('odom_frame_id',  default_value='odom',                   description='If set, TF is used to get odometry instead of the topic.'),
         DeclareLaunchArgument('map_frame_id',   default_value='map',                description='Output map frame id (TF).'),
         DeclareLaunchArgument('map_topic',      default_value='map',                description='Map topic name.'),
@@ -435,7 +435,6 @@ def generate_launch_description():
         DeclareLaunchArgument('database_path',  default_value='~/.ros/rtabmap.db',  description='Where is the map saved/loaded.'),
         DeclareLaunchArgument('topic_queue_size', default_value='10',               description='Queue size of individual topic subscribers.'),
         DeclareLaunchArgument('queue_size',     default_value='10',                 description='Backward compatibility, use "sync_queue_size" instead.'),
-        DeclareLaunchArgument('qos',            default_value='2',                  description='General QoS used for sensor input data: 0=system default, 1=Reliable, 2=Best Effort.'),
         DeclareLaunchArgument('qos',            default_value='2',                  description='General QoS used for sensor input data: 0=system default, 1=Reliable, 2=Best Effort.'),
         DeclareLaunchArgument('wait_for_transform', default_value='0.2',            description=''),
         DeclareLaunchArgument('rtabmap_args',   default_value='',                   description='Backward compatibility, use "args" instead.'),
@@ -487,7 +486,7 @@ def generate_launch_description():
         # Odometry
         DeclareLaunchArgument('visual_odometry',            default_value='false',  description='Launch rtabmap visual odometry node.'), #set to false bc i am already publishing odom from diff_drive
         DeclareLaunchArgument('icp_odometry',               default_value='false', description='Launch rtabmap icp odometry node.'),
-        DeclareLaunchArgument('odom_topic',                 default_value='odom',  description='Odometry topic name.'),
+        DeclareLaunchArgument('odom_topic',                 default_value='/rtabmap/odom',  description='Odometry topic name.'),    # Using /rtabmap/odom instead of /odom for improved visual performance (empirical observation)
         DeclareLaunchArgument('vo_frame_id',                default_value=LaunchConfiguration('odom_topic'), description='Visual/Icp odometry frame ID for TF.'),
         DeclareLaunchArgument('publish_tf_odom',            default_value='true',  description=''),
         DeclareLaunchArgument('odom_tf_angular_variance',   default_value='0.01',    description='If TF is used to get odometry, this is the default angular variance'),
