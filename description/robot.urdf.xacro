@@ -3,9 +3,11 @@
 
     <xacro:include filename="vessel.xacro" />
 
-    <xacro:include filename="camera.xacro" />
+    <!-- <xacro:include filename="camera.xacro" /> -->
 
     <xacro:include filename="depth_camera.xacro" />
+
+    <xacro:include filename="stereo.xacro" />
 
     <xacro:include filename="lidar.xacro" />
 
